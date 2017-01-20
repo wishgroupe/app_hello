@@ -18,17 +18,17 @@ Then launch `vendor` directory install
 composer install
 ```
 
-app/configs/app.conf.ini
-- Rename file as `app.ini`
-- Replace following variables :
-	#{{DB_SERVER}}
-	#{{DB_PORT}}
-	#{{DB_USER}}
-	#{{DB_PASSWORD}}
-	#{{DB_DATABASE}}
-	#{{APP_URL}}
-    #{{APP_REFERENCE}}
-    #{{APP_KEY}}
+app/configs/app.conf.ini  
+- Rename file as `app.ini`  
+- Replace following variables :  
+	#{{DB_SERVER}}  
+	#{{DB_PORT}}  
+	#{{DB_USER}}  
+	#{{DB_PASSWORD}}  
+	#{{DB_DATABASE}}  
+	#{{APP_URL}}  
+    #{{APP_REFERENCE}}  
+    #{{APP_KEY}}  
 
-app/database/app.sql :
+app/database/app.sql :  
 - SQL script to execute on your database server

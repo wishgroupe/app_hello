@@ -1,0 +1,21 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+## Global/OSX.gitignore ######################
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# PHP Storm
+.idea
+
+# SublimeText - FTPSync
+ftpsync.settings
+
+# Floobits
+.floo
+
+# Boondmanager
+vendor
+
+# Composer
+composer.lock

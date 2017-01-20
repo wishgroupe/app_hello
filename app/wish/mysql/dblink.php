@@ -2,7 +2,9 @@
 /**
  * dblink.php
  */
-namespace Lib;
+namespace Wish\MySQL;
+
+use Wish\Tools;
 
 class DbLink extends \DB\SQL
 {
@@ -38,9 +40,7 @@ class DbLink extends \DB\SQL
             array_unshift($args, '');
             unset($args[0]);
         }
-        $id = Tools::getContext()->startQuery($cmds, $this->name(), $args);
         $result = parent::exec($cmds, $args, $ttl, $log);
-        Tools::getContext()->endQuery($id);
         return $result;
     }
 }

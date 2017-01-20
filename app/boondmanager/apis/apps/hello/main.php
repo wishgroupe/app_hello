@@ -2,7 +2,7 @@
 /**
  * main.php
  */
-namespace APIs;
+namespace BoondManager\APIs\Apps\Hello;
 
 class Main {
     public function api_get(){

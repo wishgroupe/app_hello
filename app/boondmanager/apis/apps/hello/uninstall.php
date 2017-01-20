@@ -2,7 +2,7 @@
 /**
  * uninstall.php
  */
-namespace APIs;
+namespace BoondManager\APIs\Apps\Hello;
 
 class Uninstall {
     public function api_get(){

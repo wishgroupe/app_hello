@@ -2,7 +2,7 @@
 /**
  * configuration.php
  */
-namespace APIs;
+namespace BoondManager\APIs\Apps\Hello;
 
 class Configuration {
     public function api_get(){

@@ -18,8 +18,8 @@ Then launch `vendor` directory install
 composer install
 ```
 
-`app/configs/app.conf.ini`  
-- Rename file as `app.ini`  
+`app/boondmanager/configs/boondmanager.conf.ini`  
+- Rename file as `boondmanager.ini`  
 - Replace following variables :  
 	#{{DB_SERVER}}  
 	#{{DB_PORT}}  
@@ -30,5 +30,5 @@ composer install
     #{{APP_REFERENCE}}  
     #{{APP_KEY}}  
 
-`app/database/app.sql` :  
+`app/boondmanager/databases/apps/hello/hello.sql` :  
 - SQL script to execute on your database server

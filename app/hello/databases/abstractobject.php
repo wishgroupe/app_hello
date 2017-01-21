@@ -3,10 +3,10 @@
  * abstractobject.php
  */
 
-namespace BoondManager\Databases\Apps\Hello;
+namespace Hello\Databases;
 
-use BoondManager\Lib\MySQL\DbFactory;
-use Wish\MySQL\DbLink;
+use Hello\Lib\MySQL\DbFactory;
+use Hello\Lib\MySQL\DbLink;
 
 class AbstractObject {
     /**

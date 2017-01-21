@@ -3,13 +3,13 @@
  * subscriber.php
  */
 
-namespace BoondManager\Databases\Apps\Hello;
+namespace Hello\Databases;
 
-class Subscriber extends AbstractObject{
+class Subscriber extends AbstractObject {
     /**
-     * Retrieve all data related to a business unit
-     * @param  integer  $id
-     * @return Model|false
+     * Retrieve subscriber data from an App's Token
+     * @param  string  $appToken
+     * @return array|int|false
      */
     public function getSubscriberFromAppToken($appToken) {
         $result = $this->db->exec('SELECT id, customerName, appToken, customerToken, expirationDate, creationDate FROM subscriber WHERE appToken=?', $appToken);

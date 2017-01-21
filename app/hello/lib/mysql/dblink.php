@@ -2,9 +2,7 @@
 /**
  * dblink.php
  */
-namespace Wish\MySQL;
-
-use Wish\Tools;
+namespace Hello\Lib\MySQL;
 
 class DbLink extends \DB\SQL
 {
@@ -27,20 +25,20 @@ class DbLink extends \DB\SQL
 
     /**
      * Execute SQL statement(s)
-     * @param array|string $cmds
+     * @param array|string $query
      * @param null $args
      * @param int $ttl
      * @param bool $log
      * @param bool $stamp
      * @return array|FALSE|int
      */
-    public function exec($cmds, $args = NULL, $ttl = 0, $log = TRUE, $stamp = FALSE)
+    public function exec($query, $args = NULL, $ttl = 0, $log = TRUE, $stamp = false)
     {
         if (is_array($args)) {
             array_unshift($args, '');
             unset($args[0]);
         }
-        $result = parent::exec($cmds, $args, $ttl, $log);
+        $result = parent::exec($query, $args, $ttl, $log, $stamp);
         return $result;
     }
 }

@@ -22,8 +22,8 @@ $f3->set('MAIN_ROOTPATH', realpath(dirname(__FILE__).'/..'));
 $f3->set('MAIN_APPPATH', realpath(dirname(__FILE__).'/../app'));
 
 //Main configuration files loading
-$f3->config($f3->get('MAIN_APPPATH').'/boondmanager/configs/boondmanager.ini');
-$f3->config($f3->get('MAIN_APPPATH').'/boondmanager/configs/routes.ini');
+$f3->config($f3->get('MAIN_APPPATH').'/hello/configs/hello.ini');
+$f3->config($f3->get('MAIN_APPPATH').'/hello/configs/routes.ini');
 \Base::instance()->set('PLUGINS', \Base::instance()->get('MAIN_APPPATH').'/');
 
 $f3->run();

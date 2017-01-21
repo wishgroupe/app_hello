@@ -2,7 +2,9 @@
 /**
  * abstractcontroller.php
  */
-namespace Lib;
+namespace Hello\Lib;
+
+use Hello\Lib\MySQL\DbFactory;
 
 abstract class AbstractController {
     /**

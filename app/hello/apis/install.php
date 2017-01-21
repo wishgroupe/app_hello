@@ -2,12 +2,12 @@
 /**
  * install.php
  */
-namespace BoondManager\APIs\Apps\Hello;
+namespace Hello\APIs;
 
-use BoondManager\Databases\Apps\Hello\Subscriber;
-use BoondManager\Lib\MySQL\DbFactory;
+use Hello\Databases\Subscriber;
+use Hello\Lib\AbstractController;
 
-class Install {
+class Install extends AbstractController {
     public function api_get(){
         echo 'install';
 

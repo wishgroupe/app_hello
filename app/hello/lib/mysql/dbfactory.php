@@ -2,9 +2,7 @@
 /**
  * dbfactory.php
  */
-namespace BoondManager\Lib\MySQL;
-
-use Wish\MySQL\DbLink;
+namespace Hello\Lib\MySQL;
 
 class DbFactory extends \Prefab
 {

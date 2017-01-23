@@ -19,6 +19,7 @@ composer install
 	#{{DB_USER}}  
 	#{{DB_PASSWORD}}  
 	#{{DB_DATABASE}}  
+    #{{APP_INSTALLATION_CODE}}
 	#{{APP_URL}}  
     #{{APP_REFERENCE}}  
     #{{APP_KEY}}  

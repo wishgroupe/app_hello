@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="https://app.boondmanager.com/js/BoondManager_IFrame.js"></script>
+    <link type="text/css" href="https://app.boondmanager.com/css/BoondManager_IFrame.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Cache et Div pour gérer les boîtes de dialogue modales -->
+    <style type="text/css" media="screen">
+        #div_mask {position:fixed;left:0px;top:0px;width:100%;height:100%;}
+        #div_modalmessage {position:fixed;left:50%;top:50%;}
+    </style>
+
+    <!-- Code CSS pour Internet Explorer 6 -->
+    <!--[if lte IE 6]>
+    <style type="text/css" media="screen">
+        #div_mask {
+            position:absolute;
+            left:0px;
+            top:0px;
+            width:100%;
+            height:expression(document.body.scrollHeight);
+            opacity:0.6;
+            khtmlOpacity:0.6;
+            mozOpacity:0.6;
+            filter:alpha(opacity=60);
+        }
+        #div_modalmessage {
+            position:absolute;
+            left:expression(document.body.clientWidth/3);
+        }
+    </style>
+    <![endif]-->
+    <div id="div_mask"></div>
+    <div id="div_modalmessage"></div>
+    <script type="text/javascript">
+        if (navigator.appName=='Microsoft Internet Explorer')
+            document.write('<iframe id="frame_mask" style="filter: alpha(opacity=0);" src="about:blank" frameborder="0" scrolling="no"></iframe>');
+    </script>
+    <div id="frame_output">
+        <p>Hello World !</p>
+    </div>
+</body>
+<script type="text/javascript">
+    BM.init({maindivid:'frame_output', parenturl:'<?php echo $urlCallback; ?>'});
+    BM.setAutoResize(); //Demande à BoondManager de mettre à jour la hauteur de l'iframe
+</script>

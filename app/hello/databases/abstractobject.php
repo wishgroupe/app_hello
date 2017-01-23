@@ -21,4 +21,14 @@ class AbstractObject {
     public function __construct(){
         $this->db = DbFactory::instance()->getDbApp();
     }
+
+    /**
+     * prepare a value for update / insert
+     * @param mixed $value
+     * @return string|int|boolean
+     */
+    protected function prepareValue($value){
+        if(in_array(strtolower($value), array('null', 'now()'))) $value = strtoupper($value);
+        return $value;
+    }
 }

@@ -13,13 +13,13 @@ class Uninstall extends AbstractController {
         $f3 = \Base::instance();
 
         $data = @Tools::signedRequest_decode($_GET['signedRequest'], $f3->get('BMAPP.APP_KEY'));
-        if($data && isset($data['customerToken'])) {//Authorization's confirmation
+        if($data && isset($data['clientToken'])) {//Authorization's confirmation
 
             /*-----------------
             YOUR APP SPECIFIC CODE
             -----------------*/
             $app = new Subscriber();
-            $subscriber = $app->getSubscriberFromCustomerToken($data['customerToken']);
+            $subscriber = $app->getSubscriberFromClientToken($data['clientToken']);
             if($subscriber)
                 $app->deleteSubscriber($subscriber['id']);
 

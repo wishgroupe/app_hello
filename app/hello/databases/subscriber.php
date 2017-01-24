@@ -8,11 +8,11 @@ namespace Hello\Databases;
 class Subscriber extends AbstractObject {
     /**
      * Retrieve subscriber data from an App's Token
-     * @param  string $customerToken
+     * @param  string $clientToken
      * @return array|int|false
      */
-    public function getSubscriberFromCustomerToken($customerToken) {
-        $result = $this->db->exec('SELECT id, customerName, appToken, customerToken, expirationDate, creationDate FROM subscriber WHERE customerToken=?', $customerToken);
+    public function getSubscriberFromClientToken($clientToken) {
+        $result = $this->db->exec('SELECT id, clientName, appToken, clientToken, expirationDate, creationDate FROM subscriber WHERE clientToken=?', $clientToken);
         if($result)
             return $result[0];
         else

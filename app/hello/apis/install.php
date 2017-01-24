@@ -16,28 +16,29 @@ class Install extends AbstractController {
         if($data) {
             if(isset($data['installationCode']) && $data['installationCode'] == $f3->get('BMAPP.APP_INSTALLATION_CODE')) {
                 //Installation's code confirmation
-                $jsonData = array('result' => true, 'expirationDate' => 0);
+                $jsonData = array('result' => true);
             } else if(isset($data['appToken']) &&
-                isset($data['customerToken']) &&
-                isset($data['customerName']) &&
-                isset($data['expirationDate'])) {//App's Token acknowledgment of receipt
+                isset($data['clientToken']) &&
+                isset($data['clientName'])) {//App's Token acknowledgment of receipt
 
                 /*-----------------
                 YOUR APP SPECIFIC CODE
                 Do not forget to store into a database the Token receive during the installation process.
                 -----------------*/
+                $data['expirationDate'] = !isset($data['expirationDate']) ? 0 : strtotime($data['expirationDate']);
+
                 $app = new Subscriber();
-                $subscriber = $app->getSubscriberFromCustomerToken($data['customerToken']);
+                $subscriber = $app->getSubscriberFromClientToken($data['clientToken']);
                 if($subscriber)
                     $app->updateSubscriber(['subscriber' => [
-                        'customerName' => $data['customerName'],
+                        'clientName' => $data['clientName'],
                         'appToken' => $data['appToken'],
                         'expirationDate' => $data['expirationDate']
                     ]], $subscriber['id']);
                 else
                     $app->createSubscriber(['subscriber' => [
-                        'customerToken' => $data['customerToken'],
-                        'customerName' => $data['customerName'],
+                        'clientToken' => $data['clientToken'],
+                        'clientName' => $data['clientName'],
                         'appToken' => $data['appToken'],
                         'expirationDate' => $data['expirationDate']
                     ]]);

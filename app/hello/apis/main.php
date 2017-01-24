@@ -17,9 +17,9 @@ class Main extends AbstractController {
         $data = @Tools::signedRequest_decode($_GET['signedRequest'], $f3->get('BMAPP.APP_KEY'));
         $f3->set('urlCallback', isset($data['urlCallback']) ? $data['urlCallback'] : '');
 
-        if(isset($data['customerToken']) && isset($data['userToken'])) {
+        if(isset($data['clientToken']) && isset($data['userToken'])) {
             $app = new Subscriber();
-            $subscriber = $app->getSubscriberFromCustomerToken($data['customerToken']);
+            $subscriber = $app->getSubscriberFromClientToken($data['clientToken']);
             if ($subscriber) {
                 $payload = [
                     'userToken' => $data['userToken'],
@@ -31,6 +31,7 @@ class Main extends AbstractController {
                 $web = new Web();
                 $web->setSpecificHeaders(['X-JWT-App-BoondManager: ' . JWT::encode($payload, $f3->get('BMAPP.APP_KEY'))]);
                 if($response = $web->setUrl($f3->get('BMAPI.API_URL') . '/application/current-user')->get()) {
+                    var_dump($response);exit;
                     foreach ($response['included'] as $included) if($included['type'] == 'resource') {
                         $f3->set('lastName', $included['attributes']['lastName']);
                         $f3->set('firstName', $included['attributes']['firstName']);

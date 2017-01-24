@@ -2,7 +2,8 @@
 /**
  * tools.php
  */
-namespace Hello\Lib;
+
+namespace Wish;
 
 class Tools {
     /**

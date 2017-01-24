@@ -2,7 +2,7 @@
 /**
  * jwt.php
  */
-namespace Hello\Lib;
+namespace Wish;
 
 /**
  * JSON Web Token implementation, based on this spec:

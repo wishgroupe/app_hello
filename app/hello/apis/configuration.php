@@ -5,8 +5,8 @@
 namespace Hello\APIs;
 
 use Hello\Lib\AbstractController;
-use Hello\Lib\Tools;
 use Template;
+use Wish\Tools;
 
 class Configuration extends AbstractController {
     public function api_get(){

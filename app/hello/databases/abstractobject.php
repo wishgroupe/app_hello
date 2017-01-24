@@ -6,7 +6,7 @@
 namespace Hello\Databases;
 
 use Hello\Lib\MySQL\DbFactory;
-use Hello\Lib\MySQL\DbLink;
+use Wish\MySQL\DbLink;
 
 class AbstractObject {
     /**

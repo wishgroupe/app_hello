@@ -14,12 +14,13 @@ composer install
 `app/hello/configs/hello.conf.ini`  
 - Rename file as `hello.ini`  
 - Replace following variables :  
+    #{{API_URL}}  
 	#{{DB_SERVER}}  
 	#{{DB_PORT}}  
 	#{{DB_USER}}  
 	#{{DB_PASSWORD}}  
 	#{{DB_DATABASE}}  
-    #{{APP_INSTALLATION_CODE}}
+    #{{APP_INSTALLATION_CODE}}  
 	#{{APP_URL}}  
     #{{APP_REFERENCE}}  
     #{{APP_KEY}}  

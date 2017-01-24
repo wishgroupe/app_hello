@@ -8,7 +8,7 @@ namespace Hello\Databases;
 class Subscriber extends AbstractObject {
     /**
      * Retrieve subscriber data from an App's Token
-     * @param  string  $appToken
+     * @param  string $customerToken
      * @return array|int|false
      */
     public function getSubscriberFromCustomerToken($customerToken) {

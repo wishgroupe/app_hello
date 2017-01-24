@@ -4,15 +4,40 @@
  */
 namespace Hello\APIs;
 
+use Hello\Databases\Subscriber;
 use Hello\Lib\AbstractController;
-use Hello\Lib\Tools;
 use Template;
+use Wish\JWT;
+use Wish\Tools;
+use Wish\Web;
 
 class Main extends AbstractController {
     public function api_get(){
         $f3 = \Base::instance();
         $data = @Tools::signedRequest_decode($_GET['signedRequest'], $f3->get('BMAPP.APP_KEY'));
         $f3->set('urlCallback', isset($data['urlCallback']) ? $data['urlCallback'] : '');
+
+        if(isset($data['customerToken']) && isset($data['userToken'])) {
+            $app = new Subscriber();
+            $subscriber = $app->getSubscriberFromCustomerToken($data['customerToken']);
+            if ($subscriber) {
+                $payload = [
+                    'userToken' => $data['userToken'],
+                    'appToken' => $subscriber['appToken'],
+                    'time' => time(),
+                    'mode' => 'normal'
+                ];
+
+                $web = new Web();
+                $web->setSpecificHeaders(['X-JWT-App-BoondManager: ' . JWT::encode($payload, $f3->get('BMAPP.APP_KEY'))]);
+                if($response = $web->setUrl($f3->get('BMAPI.API_URL') . '/application/current-user')->get()) {
+                    foreach ($response['included'] as $included) if($included['type'] == 'resource') {
+                        $f3->set('lastName', $included['attributes']['lastName']);
+                        $f3->set('firstName', $included['attributes']['firstName']);
+                    }
+                }
+            }
+        }
 
         $f3->set('content', 'main.htm');
         echo Template::instance()->render('layout.htm');

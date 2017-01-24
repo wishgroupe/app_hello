@@ -6,7 +6,7 @@ namespace Hello\APIs;
 
 use Hello\Databases\Subscriber;
 use Hello\Lib\AbstractController;
-use Hello\Lib\Tools;
+use Wish\Tools;
 
 class Uninstall extends AbstractController {
     public function api_get(){

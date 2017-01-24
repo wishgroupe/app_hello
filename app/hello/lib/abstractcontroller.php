@@ -2,6 +2,7 @@
 /**
  * abstractcontroller.php
  */
+
 namespace Hello\Lib;
 
 use Hello\Lib\MySQL\DbFactory;

@@ -2,7 +2,8 @@
 /**
  * dblink.php
  */
-namespace Hello\Lib\MySQL;
+
+namespace Wish\MySQL;
 
 class DbLink extends \DB\SQL
 {

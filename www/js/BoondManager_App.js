@@ -45,14 +45,9 @@ function hideMaskModal() {
 if(!window.BM)
     window.BM = {
         maindivid: null,
-        _parenturl: '',
         _noframe: false,
         init: function (a) {
             BM._maindivid = a.maindivid;
-            if (a.parenturl)
-                BM._parenturl = a.parenturl;
-            else
-                BM._parenturl = window.top.location.href.split("#")[0];
 
             if (a.noframe != undefined) BM._noframe = a.noframe;
 
@@ -77,7 +72,7 @@ if(!window.BM)
             window.top.postMessage({name: 'redirect', urlRedirect: encodeURIComponent(url)}, '*');
         },
         setSize: function (h) {
-            if (!BM._noframe) 
+            if (!BM._noframe)
                 window.top.postMessage({name: 'set_size', height: h}, '*');
         },
         setAutoResize: function () {

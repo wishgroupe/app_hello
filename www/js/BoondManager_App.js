@@ -7,7 +7,6 @@
  *
  */
 
-var iframeHashId = 0;
 function setMessageModal(innerHTML) {
     blocmessage = document.getElementById('div_modalmessage');
     blocmessage.innerHTML = '';
@@ -15,9 +14,8 @@ function setMessageModal(innerHTML) {
     blocheight = blocmessage.offsetHeight/2;
     blocmessage.style.marginTop = '-'+blocheight+'px';
 
-    iframeHashId++;
     apitime = new Date;
-    window.top.location.href = BM._parenturl+'#iframeHashId='+iframeHashId+'&event=show_mask&apitime='+apitime.getTime();
+    window.top.postMessage({name: 'show_mask', time: apitime.getTime()}, '*');
     setTimeout("displayMessageModal()", 100); //Le délai doit être identique à Wish_IFrame.js
 
 }
@@ -33,9 +31,8 @@ function closeMessageModal() {
     blocmessage.style.visibility = 'hidden';
     blocmessage.innerHTML = '';
 
-    iframeHashId++;
     apitime = new Date;
-    window.top.location.href = BM._parenturl+'#iframeHashId='+iframeHashId+'&event=hide_mask&apitime='+apitime.getTime();
+    window.top.postMessage({name: 'hide_mask', time: apitime.getTime()}, '*');
     setTimeout("hideMaskModal()", 100); //Le délai doit être identique à Wish_IFrame.js
 }
 
@@ -77,26 +74,19 @@ if(!window.BM)
             document.body.prepend(divModalMessage);
         },
         redirect: function (url) {
-            iframeHashId++;
-            window.top.location.href = BM._parenturl + '#iframeHashId=' + iframeHashId + '&event=redirect&url=' + encodeURIComponent(url);
+            window.top.postMessage({name: 'redirect', urlRedirect: encodeURIComponent(url)}, '*');
         },
         setSize: function (h) {
-            if (!BM._noframe) {
-                iframeHashId++;
-                window.top.location.href = BM._parenturl + '#iframeHashId=' + iframeHashId + '&event=set_size&height=' + h;
-            }
+            if (!BM._noframe) 
+                window.top.postMessage({name: 'set_size', height: h}, '*');
         },
         setAutoResize: function () {
-            if (!BM._noframe) {
-                iframeHashId++;
-                window.top.location.href = BM._parenturl + '#iframeHashId=' + iframeHashId + '&event=set_size&height=' + (document.getElementById(BM._maindivid).offsetHeight + 10);
-            }
+            if (!BM._noframe)
+                window.top.postMessage({name: 'set_size', height: (document.getElementById(BM._maindivid).offsetHeight + 10)}, '*');
         },
         scrollTo: function (h) {
-            if (!BM._noframe) {
-                iframeHashId++;
-                window.top.location.href = BM._parenturl + '#iframeHashId=' + iframeHashId + '&event=scroll_to&to=' + h;
-            }
+            if (!BM._noframe)
+                window.top.postMessage({name: 'scroll_to', scrollTo: h}, '*');
         },
         alert: function (alert_message, bOK) {
             if (bOK) bOK += ';'; else bOK = '';

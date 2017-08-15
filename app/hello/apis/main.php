@@ -31,10 +31,8 @@ class Main extends AbstractController {
                 $web = new Web();
                 $web->setSpecificHeaders(['X-JWT-App-BoondManager: ' . JWT::encode($payload, $f3->get('BMAPP.APP_KEY'))]);
                 if($response = $web->setUrl($f3->get('BMAPI.API_URL') . '/application/current-user')->get()) {
-                    foreach ($response['included'] as $included) if($included['type'] == 'resource') {
-                        $f3->set('lastName', $included['attributes']['lastName']);
-                        $f3->set('firstName', $included['attributes']['firstName']);
-                    }
+                    $f3->set('lastName', $response['data']['attributes']['lastName']);
+                    $f3->set('firstName', $response['data']['attributes']['firstName']);
                 }
             }
         }

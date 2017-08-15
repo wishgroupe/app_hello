@@ -5,6 +5,12 @@
     <link type="text/css" href="https://app.boondmanager.com/css/BoondManager_App.css" rel="stylesheet" />
 </head>
 <body>
+    <div id="div_mask"></div>
+    <div id="div_modalmessage"></div>
+    <script type="text/javascript">
+        if (navigator.appName=='Microsoft Internet Explorer')
+            document.write('<iframe id="frame_mask" frameborder="0" scrolling="no" src="about:blank" style="filter:alpha(opacity=0);"></iframe>');
+    </script>
     <div id="frame_output" class="maincontent">
         <include href="{{ @content }}" />
     </div>

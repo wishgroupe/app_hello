@@ -10,6 +10,9 @@
     </div>
 </body>
 <script type="text/javascript">
-    BM.init({maindivid:'frame_output', parenturl:'{{ @urlCallback | raw }}'});
-    BM.setAutoResize(); //Demande à BoondManager de mettre à jour la hauteur de l'iframe
+    BoondManager.init({
+        mainDivId: 'frame_output',
+        targetOrigin: '*',
+    });
+    BoondManager.setAutoResize();
 </script>

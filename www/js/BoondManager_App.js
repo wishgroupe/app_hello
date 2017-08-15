@@ -1,94 +1,40 @@
 /**
  * \file BoondManager_App.js
- * \brief App's iFrame management
+ * \brief App's iFrame Management
  * \author Tanguy Lambert
- * \version 1.0
- * \date 23 January 2017
+ * \date 14 Mars 2017
  *
  */
-
-function setMessageModal(innerHTML) {
-    blocmessage = document.getElementById('div_modalmessage');
-    blocmessage.innerHTML = '';
-    blocmessage.innerHTML = innerHTML;
-    blocheight = blocmessage.offsetHeight/2;
-    blocmessage.style.marginTop = '-'+blocheight+'px';
-
-    apitime = new Date;
-    window.top.postMessage({name: 'show_mask', time: apitime.getTime()}, '*');
-    setTimeout("displayMessageModal()", 100); //Le délai doit être identique à Wish_IFrame.js
-
-}
-
-function displayMessageModal() {
-    document.getElementById('div_modalmessage').style.visibility = 'visible';
-    if(navigator.appName=='Microsoft Internet Explorer') document.getElementById('frame_mask').style.visibility = "visible";
-    document.getElementById('div_mask').style.visibility = 'visible';
-}
-
-function closeMessageModal() {
-    blocmessage = document.getElementById('div_modalmessage');
-    blocmessage.style.visibility = 'hidden';
-    blocmessage.innerHTML = '';
-
-    apitime = new Date;
-    window.top.postMessage({name: 'hide_mask', time: apitime.getTime()}, '*');
-    setTimeout("hideMaskModal()", 100); //Le délai doit être identique à Wish_IFrame.js
-}
-
-function hideMaskModal() {
-    if(navigator.appName=='Microsoft Internet Explorer') document.getElementById('frame_mask').style.visibility = "hidden";
-    document.getElementById('div_mask').style.visibility = 'hidden';
-
-}
-
-if(!window.BM)
-    window.BM = {
-        maindivid: null,
-        _noframe: false,
-        init: function (a) {
-            BM._maindivid = a.maindivid;
-
-            if (a.noframe != undefined) BM._noframe = a.noframe;
-
-            if (navigator.appName == 'Microsoft Internet Explorer') {
-                var frameMask = document.createElement("iframe");
-                frameMask.id = 'frame_mask';
-                frameMask.src = 'about:blank';
-                frameMask.frameBorder = '0';
-                frameMask.scrolling = 'no';
-                document.body.prepend(frameMask);
+if(!window.BoondManager)
+    window.BoondManager = {
+        _mainDivId:'frame_output',
+        _targetOrigin: '*',
+        init:function(a) {
+            BoondManager._mainDivId=a.mainDivId;
+            if(a.targetOrigin != undefined) BoondManager._targetOrigin=a.targetOrigin;
+        },
+        postMessage: function(payload) {
+            if(parent && parent.postMessage) {
+                var nowTime = new Date;
+                payload['time'] = nowTime.getTime();
+                parent.postMessage(payload, BoondManager._targetOrigin);
             }
-
-            var divMask = document.createElement("div");
-            divMask.id = 'div_mask';
-            document.body.prepend(divMask);
-
-            var divModalMessage = document.createElement("div");
-            divModalMessage.id = 'div_modalmessage';
-            document.body.prepend(divModalMessage);
         },
-        redirect: function (url) {
-            window.top.postMessage({name: 'redirect', urlRedirect: encodeURIComponent(url)}, '*');
+        redirect:function(url) {
+            BoondManager.postMessage({'action': 'redirect', 'url': url});
         },
-        setSize: function (h) {
-            if (!BM._noframe)
-                window.top.postMessage({name: 'set_size', height: h}, '*');
+        setSize:function(h) {
+            BoondManager.postMessage({'action': 'setSize', 'height': h});
         },
-        setAutoResize: function () {
-            if (!BM._noframe)
-                window.top.postMessage({name: 'set_size', height: (document.getElementById(BM._maindivid).offsetHeight + 10)}, '*');
+        setAutoResize:function() {
+            if(document.getElementById(BoondManager._mainDivId))
+                BoondManager.postMessage({'action': 'setSize', 'height': (document.getElementById(BoondManager._mainDivId).offsetHeight+10)});
         },
-        scrollTo: function (h) {
-            if (!BM._noframe)
-                window.top.postMessage({name: 'scroll_to', scrollTo: h}, '*');
+        scrollTo:function(h) {
+            BoondManager.postMessage({'action': 'scrollTo', 'height': h});
         },
-        alert: function (alert_message, bOK) {
-            if (bOK) bOK += ';'; else bOK = '';
-            setMessageModal(alert_message + '<br /><br /><table width="100%"><tr><td width="37%">&nbsp;</td><td width="26%"><input type="button" value="OK" onclick="' + bOK + 'closeMessageModal();" id="bok_modalmessage" /></td><td width="37%">&nbsp;</td></tr></table>');
-        },
-        confirm: function (confirm_message, bYES, bNO, language) {
-            switch (language) {
+        confirm: function(confirm_message, bYES, bNO, language) {
+            switch(language) {
                 default:
                     lYES = 'Oui';
                     lNO = 'Non';
@@ -98,8 +44,45 @@ if(!window.BM)
                     lNO = 'NO';
                     break;
             }
-            if (bYES) bYES += ';'; else bYES = '';
-            if (bNO) bNO += ';'; else bNO = '';
-            setMessageModal(confirm_message + '<br /><br /><table width="100%"><tr><td width="21%">&nbsp;</td><td width="25%"><input type="button" value="' + lYES + '" onclick="' + bYES + 'closeMessageModal();" id="byes_modalmessage" /></td><td width="8%">&nbsp;</td><td width="25%"><input type="button" value="' + lNO + '" onclick="' + bNO + 'closeMessageModal();" id="bno_modalmessage" /></td><td width="21%">&nbsp;</td></tr></table>');
+            if(bYES) bYES += ';'; else bYES = '';
+            if(bNO) bNO += ';'; else bNO = '';
+            BoondManager.openModalMessage(confirm_message+'<br /><br /><table width="100%"><tr><td width="21%">&nbsp;</td><td width="25%"><input type="button" value="'+lYES+'" onclick="'+bYES+'BoondManager.closeModalMessage();" id="byes_modalmessage" /></td><td width="8%">&nbsp;</td><td width="25%"><input type="button" value="'+lNO+'" onclick="'+bNO+'BoondManager.closeModalMessage();" id="bno_modalmessage" /></td><td width="21%">&nbsp;</td></tr></table>');
+        },
+        alert: function(alert_message, bOK) {
+            if(bOK) bOK += ';'; else bOK = '';
+            BoondManager.openModalMessage(alert_message+'<br /><br /><table width="100%"><tr><td width="37%">&nbsp;</td><td width="26%"><input type="button" value="OK" onclick="'+bOK+'BoondManager.closeModalMessage();" id="bok_modalmessage" /></td><td width="37%">&nbsp;</td></tr></table>');
+        },
+        showModalMask: function() {
+            BoondManager.postMessage({'action': 'showModalMask'});
+        },
+        hideModalMask: function() {
+            BoondManager.postMessage({'action': 'hideModalMask'});
+        },
+        openModalMessage: function(innerHTML) {
+            blocmessage = document.getElementById('div_modalmessage');
+            blocmessage.innerHTML = '';
+            blocmessage.innerHTML = innerHTML;
+            blocheight = blocmessage.offsetHeight/2;
+            blocmessage.style.marginTop = '-'+blocheight+'px';
+
+            BoondManager.showModalMask();
+            BoondManager.showModalMessage();
+        },
+        closeModalMessage: function() {
+            blocmessage = document.getElementById('div_modalmessage');
+            blocmessage.style.visibility = 'hidden';
+            blocmessage.innerHTML = '';
+
+            BoondManager.hideModalMask();
+            BoondManager.hideModalMessage();
+        },
+        showModalMessage: function() {
+            document.getElementById('div_modalmessage').style.visibility = 'visible';
+            if(navigator.appName=='Microsoft Internet Explorer') document.getElementById('frame_mask').style.visibility = "visible";
+            document.getElementById('div_mask').style.visibility = 'visible';
+        },
+        hideModalMessage: function() {
+            if(navigator.appName=='Microsoft Internet Explorer') document.getElementById('frame_mask').style.visibility = "hidden";
+            document.getElementById('div_mask').style.visibility = 'hidden';
         }
     }

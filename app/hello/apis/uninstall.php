@@ -9,7 +9,7 @@ use Hello\Lib\AbstractController;
 use Wish\Tools;
 
 class Uninstall extends AbstractController {
-    public function api_get(){
+    public function api_delete(){
         $f3 = \Base::instance();
 
         $data = @Tools::signedRequest_decode($_GET['signedRequest'], $f3->get('BMAPP.APP_KEY'));

@@ -9,10 +9,10 @@ use Hello\Lib\AbstractController;
 use Wish\Tools;
 
 class Install extends AbstractController {
-    public function api_get(){
+    public function api_post(){
         $f3 = \Base::instance();
 
-        $data = @Tools::signedRequest_decode($_GET['signedRequest'], $f3->get('BMAPP.APP_KEY'));
+        $data = @Tools::signedRequest_decode($_POST['signedRequest'], $f3->get('BMAPP.APP_KEY'));
         if($data) {
             if(isset($data['installationCode']) && $data['installationCode'] == $f3->get('BMAPP.APP_INSTALLATION_CODE')) {
                 //Installation's code confirmation

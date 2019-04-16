@@ -38,6 +38,7 @@ class Main extends AbstractController {
         }
 
         $f3->set('content', 'main.htm');
+        $f3->set('page', $f3->get('PARAMS.page'));
         echo Template::instance()->render('layout.htm');
     }
 }

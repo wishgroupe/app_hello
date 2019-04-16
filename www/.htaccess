@@ -1,6 +1,11 @@
 SetEnv PHP_VER 5
 SetEnv SESSION_USE_TRANS_SID 0
 
+SetEnvIfNoCase ORIGIN (.*) ORIGIN=$1
+Header always set Access-Control-Allow-Methods "POST, GET, PUT, OPTIONS, PATCH, DELETE"
+Header always set Access-Control-Allow-Origin "*"
+Header set X-Frame-Options "allow-from http://localhost:4200"
+
 Options +FollowSymlinks
 
 RewriteEngine On

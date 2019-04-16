@@ -44,7 +44,7 @@ class Install extends AbstractController {
                     ]]);
 
                 $jsonData = array('result' => true);
-            } else $jsonData = array('result' => false);
+            } else $jsonData = array('result' => true);
         } else $jsonData = array('result' => false);
 
         header('Content-Type: application/json');

@@ -1,46 +1,20 @@
-The Web root directory is `www`
+# Installation
 
-# Composer Install 
-
-Please follow this tutorial :
-
-https://getcomposer.org/download/
-
-Then launch `vendor` directory install
-```
-composer install
-```
+Copy all files inside your web directory accessible from your **App's URL**.
+ 
+cf. https://support.boondmanager.com/hc/fr/articles/209465426-Create-your-App
 
 # Set application's config
-`app/hello/configs/hello.conf.ini`  
-- Rename file as `hello.ini`  
-- Replace following variables :
+- Fill all following variables inside `init.php`:
 
 |  variable | description | example |
 | --- | --- | --- |
-| **{{API_URL}}** |  base url to boondmanager's api | `https://ui.boondmanager.com/api` |
-| **{{DB_SERVER}}** | Mysql server address | `127.0.0.1` |
-| **{{DB_PORT}}** | Mysql port | `3306` |
-| **{{DB_USER}}** | Mysql user | `app_hello` |
-| **{{DB_PASSWORD}}** | Mysql password | `myPassword` |
-| **{{DB_DATABASE}}** | Mysql database | `app_hello` |
-| **{{APP_INSTALLATION_CODE}}** | App's internal reference | `API100001` |
-| **{{APP_URL}}** | App's base url for apis (same as the one given in boondmanager market place | `https://myhost/labs_hello` |
-| **{{APP_REFERENCE}}** | App's reference in boondmanager marketPlace | `hellolabs` |
-| **{{APP_KEY}}** | App's' key in boondmanager marketPlace | `123600cb12b1234a3123e` |
+| **{{APP_KEY}}** |  Your **App's Key** | `0000aaaa0000aaaa0000` |
+| **{{APP_REFERENCE}}** | Your app's **Reference** | `APP1000` |
+| **{{APP_CODE}}** | Your **Installation's Code** | `` |
 
-# Install the database
+cf. https://support.boondmanager.com/hc/fr/articles/209465426-Create-your-App
 
-create a database on your server and then  install the following script on your database server `app/hello/databases/hello.sql`
-
-# Set folders
-
-create a folder tmp and give a right access to www-data on it
-
-```
-mkdir tmp
-chmod 755 tmp
-chown www-data:www-data tmp
-``` 
+cf. https://support.boondmanager.com/hc/fr/articles/209465446-Install-your-App
 
 

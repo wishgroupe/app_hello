@@ -1,0 +1,7 @@
+RewriteEngine On
+
+RewriteRule ^install$ index.php?script=install [QSA,L]
+RewriteRule ^uninstall$ index.php?script=uninstall [QSA,L]
+RewriteRule ^configuration$ index.php?script=configuration [QSA,L]
+RewriteRule ^boondmanager.js$ boondmanager.js [QSA,L]
+RewriteRule ^(.*)$ index.php?function=$1 [QSA,L]

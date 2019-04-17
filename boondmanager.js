@@ -48,7 +48,7 @@ if (!window.BoondManager) {
 					elt = document.getElementById(_mainDivId);
 				}
 			} else {
-				elt = document.getElementsByTagName('body').item(0);
+				elt = document.getElementsByTagName('html').item(0);
 			}
 
 			if (elt) {

@@ -1,6 +1,3 @@
-SetEnvIfNoCase ORIGIN (.*) ORIGIN=$1
-Header always set Access-Control-Allow-Origin "%{ORIGIN}e"
-
 RewriteEngine On
 
 RewriteRule ^install$ index.php?script=install [QSA,L]

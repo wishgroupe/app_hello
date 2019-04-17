@@ -10,11 +10,13 @@ if (!window.BoondManager) {
 		var lastID = 1;
 
 		function init(a) {
-			if( typeof a._mainDivId !== 'undefined') _mainDivId = a.mainDivId;
-			if (typeof a.targetOrigin !== 'undefined') _targetOrigin = a.targetOrigin;
-			if (typeof a.parentID !== 'undefined') _parentID = a.parentID;else {
-				var url = new URL(window.location);
-				_parentID = url.searchParams.get('iFrameID');
+			if(typeof a !== 'undefined') {
+				if (typeof a.mainDivId !== 'undefined') _mainDivId = a.mainDivId;
+				if (typeof a.targetOrigin !== 'undefined') _targetOrigin = a.targetOrigin;
+				if (typeof a.parentID !== 'undefined') _parentID = a.parentID; else {
+					var url = new URL(window.location);
+					_parentID = url.searchParams.get('iFrameID');
+				}
 			}
 			addEventListenerOnMessage();
 			return call('registerSDK', {

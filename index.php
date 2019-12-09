@@ -87,9 +87,7 @@ $page = <<<CONTENT
 	</head>
 	<body>
 		<script type="text/javascript">
-		    BoondManager.init().then( () => {
-		        BoondManager.setAutoResize();
-		    })
+		    
 		</script>
 		
 		<h1>{$function}</h1>
@@ -101,21 +99,15 @@ $page = <<<CONTENT
 		<hr/>
 		
 		<div>
-			<a href="#" onclick="redirect();" class="button">go to resources</a>
+			<a href="#" onclick="BoondManager.redirect('/resources');" class="button">go to resources</a>
 		</div>
 		
 		<script>
-			function redirect() {
-				var a=prompt('url', '/resources'); 
-				if(a) {
-					BoondManager.confirm('Are you sure you want to go to ' + a).then( (answer) => {
-						if(answer) {
-							BoondManager.redirect(a);
-						}
-					});
-				} 
-				return false;
-			}
+			BoondManager.init({
+				targetOrigin : '*'
+			}).then( () => {
+		        BoondManager.setAutoResize();
+		    })
 		</script>
 	</body>
 </html>

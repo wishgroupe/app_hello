@@ -1,19 +1,31 @@
-"use strict";
+'use strict';
 
 if (!window.BoondManager) {
-	window.BoondManager = function () {
-		var SDK_VERSION = "1.0";
+	window.BoondManager = (function () {
+		// Widgets events
+		const EVENTS = {
+			OPEN: 'open',
+			CLOSE: 'close',
+			CHANGE_PAGE: 'changePage',
+			CHANGE_ENTITY: 'changeEntity',
+			CLICK_TO_CALL: 'clickToCall'
+		};
+
+		var SDK_VERSION = '1.0';
 		var _mainDivId = null;
 		var _targetOrigin = 'https://app.boondmanager.com';
+		var _sourceOrigin = 'https://ui.boondmanager.com';
 		var _parentID = null;
 		var pendingCall = [];
 		var lastID = 1;
+		var _listeners = {};
 
 		function init(a) {
-			if(typeof a !== 'undefined') {
+			if (typeof a !== 'undefined') {
 				if (typeof a.mainDivId !== 'undefined') _mainDivId = a.mainDivId;
 				if (typeof a.targetOrigin !== 'undefined') _targetOrigin = a.targetOrigin;
-				if (typeof a.parentID !== 'undefined') _parentID = a.parentID; else {
+				if (typeof a.parentID !== 'undefined') _parentID = a.parentID;
+				else {
 					var url = new URL(window.location);
 					_parentID = url.searchParams.get('iFrameID');
 				}
@@ -40,8 +52,15 @@ if (!window.BoondManager) {
 			});
 		}
 
-		function setAutoResize() {
+		function setWidth(w) {
+			send('setSize', {
+				width: w
+			});
+		}
+
+		function setAutoResize(direction = 'height') {
 			var elt = null;
+			var params = null;
 
 			if (_mainDivId) {
 				if (document.getElementById(_mainDivId)) {
@@ -52,7 +71,15 @@ if (!window.BoondManager) {
 			}
 
 			if (elt) {
-				setSize(elt.offsetHeight + 10);
+				if (direction === 'height' || direction === 'both') {
+					params = { ...params, ...{ height: elt.offsetHeight + 'px' } };
+				}
+				if (direction === 'width' || direction === 'both') {
+					params = { ...params, ...{ width: elt.offsetWidth + 'px' } };
+				}
+				if (params) {
+					send('setSize', params);
+				}
 			}
 		}
 
@@ -72,7 +99,7 @@ if (!window.BoondManager) {
 		}
 
 		function alert(alert_message, title, bOK) {
-			return send('alert', {
+			return call('alert', {
 				message: alert_message,
 				title: title,
 				okLabel: bOK
@@ -81,13 +108,13 @@ if (!window.BoondManager) {
 
 		function showModalMask() {
 			postMessage({
-				'action': 'showModalMask'
+				action: 'showModalMask'
 			});
 		}
 
 		function hideModalMask() {
 			postMessage({
-				'action': 'hideModalMask'
+				action: 'hideModalMask'
 			});
 		}
 
@@ -111,16 +138,26 @@ if (!window.BoondManager) {
 
 		function showModalMessage() {
 			document.getElementById('div_modalmessage').style.visibility = 'visible';
-			if (navigator.appName === 'Microsoft Internet Explorer') document.getElementById('frame_mask').style.visibility = "visible";
+			if (navigator.appName === 'Microsoft Internet Explorer')
+				document.getElementById('frame_mask').style.visibility = 'visible';
 			document.getElementById('div_mask').style.visibility = 'visible';
 		}
 
 		function hideModalMessage() {
-			if (navigator.appName === 'Microsoft Internet Explorer') document.getElementById('frame_mask').style.visibility = "hidden";
+			if (navigator.appName === 'Microsoft Internet Explorer')
+				document.getElementById('frame_mask').style.visibility = 'hidden';
 			document.getElementById('div_mask').style.visibility = 'hidden';
 		}
 
 		function onMessage(event) {
+			if (event.origin !== _sourceOrigin) {
+				send('logOriginError', { event: event.origin, sourceOrigin: _sourceOrigin });
+				console.error(
+					'Warning, event origin may be coming from different location that document origin',
+					event.origin,
+					_sourceOrigin
+				);
+			}
 			var message = event.data;
 			var action = message.action;
 
@@ -144,7 +181,27 @@ if (!window.BoondManager) {
 				case 'onAfterValidate':
 					triggerOnAfterValidate(message);
 					break;
+
+				case 'onAfterUnvalidate':
+					triggerOnAfterUnvalidate(message);
+					break;
+
+				case 'onAfterReject':
+					triggerOnAfterReject(message);
+					break;
+
+				default:
+					if (typeof _listeners[action] === 'function') {
+						const response = _listeners[action](message);
+						reply(message.id, response);
+					}
+					break;
 			}
+		}
+
+		function addListener(event, handler) {
+			_listeners[event] = handler;
+			send('subscribe', { event: event });
 		}
 
 		function triggerOnAfterSave(message) {
@@ -163,6 +220,14 @@ if (!window.BoondManager) {
 			reply(message.id, publicFunctions.onAfterValidate());
 		}
 
+		function triggerOnAfterUnvalidate(message) {
+			reply(message.id, publicFunctions.onAfterUnvalidate());
+		}
+
+		function triggerOnAfterReject(message) {
+			reply(message.id, publicFunctions.onAfterReject());
+		}
+
 		function onBeforeSave() {
 			return true;
 		}
@@ -176,6 +241,14 @@ if (!window.BoondManager) {
 		}
 
 		function onAfterValidate() {
+			return true;
+		}
+
+		function onAfterUnvalidate() {
+			return true;
+		}
+
+		function onAfterReject() {
 			return true;
 		}
 
@@ -280,11 +353,28 @@ if (!window.BoondManager) {
 			return call('getModel');
 		}
 
+		function getRoute() {
+			return call('getRoute');
+		}
+
+		function open() {
+			return call('open');
+		}
+
+		function close() {
+			return call('close');
+		}
+
+		function getUserLanguage() {
+			return call('getUserLanguage');
+		}
+
 		var publicFunctions = {
 			init: init,
 			postMessage: postMessage,
 			redirect: redirect,
 			setSize: setSize,
+			setWidth: setWidth,
 			setAutoResize: setAutoResize,
 			scrollTo: scrollTo,
 			confirm: confirm,
@@ -296,9 +386,18 @@ if (!window.BoondManager) {
 			onBeforeSave: onBeforeSave,
 			onBeforeValidate: onBeforeValidate,
 			onAfterValidate: onAfterValidate,
+			onAfterUnvalidate: onAfterUnvalidate,
+			onAfterReject: onAfterReject,
 			test: test,
-			getModel: getModel
+			getModel: getModel,
+			// Widgets functions
+			on: addListener,
+			getRoute: getRoute,
+			open: open,
+			close: close,
+			getUserLanguage: getUserLanguage,
+			EVENTS: EVENTS
 		};
 		return publicFunctions;
-	} ();
+	})();
 }
